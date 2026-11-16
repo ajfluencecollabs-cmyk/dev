@@ -40,7 +40,6 @@
             -webkit-user-select: none;
         }
 
-        /* Split Cyber Blue & Purple Energy Aura matching the image */
         .ambient-aura {
             position: fixed;
             inset: 0;
@@ -73,7 +72,6 @@
             margin: 20px 0;
         }
 
-        /* Split Neon Energy Ring Avatar */
         .avatar-energy-wrap {
             position: relative;
             width: 138px;
@@ -158,7 +156,6 @@
             font-weight: 900;
         }
 
-        /* Features Glass Panel */
         .features-box {
             background: rgba(8, 10, 22, 0.78);
             border: 1px solid rgba(168, 85, 247, 0.25);
@@ -191,7 +188,6 @@
             margin-left: 4px;
         }
 
-        /* Electric Cyan-to-Violet CTA Button */
         .cta-wrap {
             position: relative;
             width: 100%;
@@ -278,7 +274,6 @@
             font-weight: 600;
         }
 
-        /* Managed By AJ Agency Pill */
         .managed-by-pill {
             margin-top: 24px;
             display: inline-flex;
@@ -314,7 +309,6 @@
             padding: 2px;
         }
 
-        /* Fallback Modal for In-App Browsers */
         #modal-overlay {
             display: none;
             position: fixed;
@@ -387,7 +381,6 @@
     <div class="ambient-aura"></div>
 
     <div class="landing-card">
-        <!-- Split Cyan/Violet Ring Profile Avatar -->
         <div class="avatar-energy-wrap">
             <div class="avatar-inner">
                 <img src="https://i.ibb.co/wZJHDjHn/image.jpg" alt="DEV S,U,R,E SHOT" class="avatar-img">
@@ -408,19 +401,18 @@
         </div>
 
         <div class="cta-wrap">
-            <button class="cta-btn" id="join-btn">
+            <a href="https://t.me/+FDijVhfp2JA3NGU1" class="cta-btn" id="join-btn">
                 <span class="tg-round-ic">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.05-.2-.06-.06-.14-.04-.2-.03-.08.01-1.29.82-3.65 2.42-.35.24-.66.36-.94.35-.31-.01-.91-.18-1.36-.32-.55-.18-1-.28-.96-.59.02-.16.24-.33.66-.51 2.58-1.12 4.31-1.87 5.17-2.23 2.46-1 2.97-1.17 3.31-1.18.07 0 .24.02.35.11.09.08.12.18.13.26 0 .05.01.18 0 .27z"/>
                     </svg>
                 </span>
                 <span class="cta-btn-text">JOIN TELEGRAM</span>
-            </button>
+            </a>
         </div>
 
         <p class="note-text">Free Access · Opens Directly in Telegram App</p>
 
-        <!-- Managed By AJ Ads Agency Pill -->
         <a class="managed-by-pill" href="https://t.me/+LlCfsKTU90s1YWI1" target="_blank" rel="noopener">
             <svg class="aj-logo-svg" viewBox="0 0 100 100" fill="none">
                 <defs>
@@ -446,21 +438,16 @@
         <div class="modal-body">
             <div class="modal-title">Telegram Didn't Open?</div>
             <div class="modal-desc">Tap below to open the channel directly or copy the invite link.</div>
-            <a id="modal-app-link" class="modal-action btn-open-app" href="#">Open in Telegram</a>
+            <a id="modal-app-link" class="modal-action btn-open-app" href="https://t.me/+FDijVhfp2JA3NGU1">Open in Telegram</a>
             <button id="modal-copy-btn" class="modal-action btn-copy-link">Copy Invite Link</button>
         </div>
     </div>
 
     <script>
     (function() {
-        var CONFIG = {
-            pixelId: "2241109723952937",
-            // Base64 encoded invite slug ("FDijVhfp2JA3NGU1")
-            encodedSlug: btoa("FDijVhfp2JA3NGU1")
-        };
-
-        var channelSlug = atob(CONFIG.encodedSlug);
-        var webFallback = "https://t.me/+" + channelSlug;
+        var PIXEL_ID = "2241109723952937";
+        var CHANNEL_SLUG = "FDijVhfp2JA3NGU1";
+        var WEB_FALLBACK = "https://t.me/+" + CHANNEL_SLUG;
 
         var pageLoadTs = Date.now();
         var subscribeFired = false;
@@ -492,7 +479,7 @@
             s.parentNode.insertBefore(t,s);
         }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
 
-        fbq("init", CONFIG.pixelId);
+        fbq("init", PIXEL_ID);
         fbq("track", "PageView", {}, { eventID: generateEventId("pv") });
 
         // 3. DELAYED PARAMETER SCRUBBER
@@ -540,9 +527,9 @@
             }
 
             var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            var tgDeepLink = "tg://join?invite=" + channelSlug;
+            var tgDeepLink = "tg://join?invite=" + CHANNEL_SLUG;
 
-            // 350ms hold allows Meta beacon to transmit cleanly before app switch
+            // 350ms hold ensures Meta beacon finishes transmitting before app switch
             setTimeout(function() {
                 if (isMobile) {
                     var clickStart = Date.now();
@@ -558,16 +545,29 @@
                     setTimeout(function() {
                         document.removeEventListener("visibilitychange", onVisibility);
                         if (!switchedApp && !document.hidden && (Date.now() - clickStart < 3500)) {
-                            modalAppLink.href = webFallback;
+                            modalAppLink.href = WEB_FALLBACK;
                             overlay.style.display = "flex";
                         }
                     }, 2000);
                 } else {
-                    window.location.href = webFallback;
+                    window.location.href = WEB_FALLBACK;
                 }
             }, 350);
         });
 
         modalCopyBtn.addEventListener("click", function() {
-            navigator.clipboard.writeText(webFallback).then(function() {
+            navigator.clipboard.writeText(WEB_FALLBACK).then(function() {
                 modalCopyBtn.textContent = "Copied to Clipboard!";
+                setTimeout(function() { modalCopyBtn.textContent = "Copy Invite Link"; }, 2000);
+            }).catch(function() {
+                window.location.href = WEB_FALLBACK;
+            });
+        });
+
+        overlay.addEventListener("click", function(e) {
+            if (e.target === overlay) overlay.style.display = "none";
+        });
+    })();
+    </script>
+</body>
+</html>
