@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#05060e">
+    <title>DEV S,U,R,E SHOT · Official Telegram</title>
+
+    <style>
+        :root {
+            --bg-void: #04050c;
+            --neon-cyan: #00d2ff;
+            --electric-blue: #0072ff;
+            --neon-purple: #a855f7;
+            --deep-violet: #6b21a8;
+            --glow-cyan: rgba(0, 210, 255, 0.45);
+            --glow-purple: rgba(168, 85, 247, 0.45);
+            --text-white: #ffffff;
+            --text-silver: #cbd5e1;
+            --text-muted: #8b9bb4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            min-height: 100vh;
+            background: var(--bg-void);
+            color: var(--text-white);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Split Cyber Blue & Purple Energy Aura matching the image */
+        .ambient-aura {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(0, 210, 255, 0.22) 0%, transparent 55%),
+                radial-gradient(circle at 75% 35%, rgba(168, 85, 247, 0.24) 0%, transparent 55%),
+                radial-gradient(circle at 50% 90%, #020308 0%, transparent 100%);
+            z-index: 1;
+        }
+
+        .landing-card {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 405px;
+            background: linear-gradient(155deg, rgba(14, 18, 34, 0.92) 0%, rgba(7, 8, 18, 0.98) 100%);
+            border: 1px solid rgba(0, 210, 255, 0.35);
+            border-right-color: rgba(168, 85, 247, 0.45);
+            border-bottom-color: rgba(168, 85, 247, 0.45);
+            border-radius: 36px;
+            padding: 36px 24px 28px;
+            text-align: center;
+            box-shadow: 
+                0 30px 70px rgba(0, 0, 0, 0.92),
+                -8px 0 35px rgba(0, 210, 255, 0.14),
+                8px 0 35px rgba(168, 85, 247, 0.16);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin: 20px 0;
+        }
+
+        /* Split Neon Energy Ring Avatar */
+        .avatar-energy-wrap {
+            position: relative;
+            width: 138px;
+            height: 138px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            padding: 3.5px;
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--electric-blue) 45%, var(--neon-purple) 75%, #d946ef 100%);
+            box-shadow: 
+                -5px 0 28px var(--glow-cyan),
+                5px 0 28px var(--glow-purple);
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #04050c;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 3px;
+            right: 4px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--electric-blue));
+            border-radius: 50%;
+            border: 3px solid #090b17;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 14px var(--glow-cyan);
+            z-index: 4;
+        }
+        .verified-badge svg { width: 14px; height: 14px; fill: #ffffff; }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, rgba(0, 210, 255, 0.14), rgba(168, 85, 247, 0.18));
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            color: #e0f2fe;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .channel-title {
+            font-size: 28px;
+            font-weight: 950;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 0 6px 0;
+            line-height: 1.1;
+            background: linear-gradient(90deg, #ffffff 15%, #7dd3fc 50%, #d8b4fe 85%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 12px rgba(0, 210, 255, 0.25));
+        }
+
+        .stars-row {
+            font-size: 13px;
+            letter-spacing: 6px;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        /* Features Glass Panel */
+        .features-box {
+            background: rgba(8, 10, 22, 0.78);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-left: 4px solid var(--neon-cyan);
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-silver);
+            margin-bottom: 11px;
+        }
+        .feature-item:last-child { margin-bottom: 0; }
+
+        .feature-item span {
+            color: var(--neon-cyan);
+            margin-right: 10px;
+            font-size: 15px;
+            text-shadow: 0 0 10px var(--glow-cyan);
+        }
+
+        .feature-item b {
+            color: #ffffff;
+            margin-left: 4px;
+        }
+
+        /* Electric Cyan-to-Violet CTA Button */
+        .cta-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .cta-btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+            width: 100% !important;
+            padding: 18px 12px !important;
+            border-radius: 50px !important;
+            border: none !important;
+            cursor: pointer;
+            text-decoration: none !important;
+            background: linear-gradient(90deg, #00d2ff 0%, #3b82f6 50%, #9333ea 100%) !important;
+            box-shadow: 
+                0 12px 30px rgba(0, 210, 255, 0.35),
+                0 8px 25px rgba(147, 51, 234, 0.35),
+                inset 0 2px 4px rgba(255, 255, 255, 0.65) !important;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease;
+        }
+
+        .cta-btn:active {
+            transform: scale(0.97);
+        }
+
+        .cta-btn-text {
+            color: #ffffff !important;
+            font-size: 19px !important;
+            font-weight: 950 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            display: inline-block !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+        }
+
+        .cta-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            transform: skewX(-20deg);
+            animation: sheen 3.5s infinite ease-in-out;
+        }
+
+        @keyframes sheen {
+            0% { left: -100%; }
+            18% { left: 120%; }
+            100% { left: 120%; }
+        }
+
+        .tg-round-ic {
+            width: 32px;
+            height: 32px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        .tg-round-ic svg {
+            width: 16px;
+            height: 16px;
+            fill: #0072ff;
+            margin-right: 1px;
+        }
+
+        .note-text {
+            margin-top: 16px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            letter-spacing: 0.4px;
+            font-weight: 600;
+        }
+
+        /* Managed By AJ Agency Pill */
+        .managed-by-pill {
+            margin-top: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px 6px 6px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(12, 16, 32, 0.85);
+            color: rgba(226, 232, 240, 0.75);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .managed-by-pill:hover {
+            border-color: rgba(0, 210, 255, 0.65);
+            transform: translateY(-1px);
+        }
+        .managed-by-pill b {
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .aj-logo-svg {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: block;
+            flex-shrink: 0;
+            padding: 2px;
+        }
+
+        /* Fallback Modal for In-App Browsers */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 9999;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-body {
+            background: #0f1324;
+            width: 100%;
+            max-width: 440px;
+            border-top-left-radius: 26px;
+            border-top-right-radius: 26px;
+            border-top: 1px solid rgba(0, 210, 255, 0.4);
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .modal-desc {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .modal-action {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            border-radius: 14px;
+            font-size: 14.5px;
+            font-weight: 800;
+            text-decoration: none;
+            margin-bottom: 9px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-open-app {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            color: #ffffff;
+        }
+
+        .btn-copy-link {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        @media (max-height: 650px) {
+            .landing-card { padding: 24px 20px 20px; }
+            .avatar-energy-wrap { width: 110px; height: 110px; margin-bottom: 14px; }
+            .channel-title { font-size: 24px; }
+            .features-box { margin-bottom: 18px; padding: 14px; }
+            .cta-btn { padding: 15px 10px !important; }
+            .managed-by-pill { margin-top: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-aura"></div>
+
+    <div class="landing-card">
+        <!-- Split Cyan/Violet Ring Profile Avatar -->
+        <div class="avatar-energy-wrap">
+            <div class="avatar-inner">
+                <img src="https://i.ibb.co/wZJHDjHn/image.jpg" alt="DEV S,U,R,E SHOT" class="avatar-img">
+            </div>
+            <div class="verified-badge">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+        </div>
+
+        <div class="rank-badge">👑 #1 VIP ANALYST</div>
+        <h1 class="channel-title">DEV S,U,R,E SHOT</h1>
+        <div class="stars-row">★ ★ ★</div>
+
+        <div class="features-box">
+            <div class="feature-item"><span>⚡</span> High-Accuracy <b>Sure Shot Insights</b></div>
+            <div class="feature-item"><span>⚡</span> Live Session & <b>Match Analysis</b></div>
+            <div class="feature-item"><span>⚡</span> Daily Exclusive <b>VIP Updates</b></div>
+        </div>
+
+        <div class="cta-wrap">
+            <button class="cta-btn" id="join-btn">
+                <span class="tg-round-ic">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.71-2.48 2.76-2.7.01-.03.01-.14-.05-.2-.06-.06-.14-.04-.2-.03-.08.01-1.29.82-3.65 2.42-.35.24-.66.36-.94.35-.31-.01-.91-.18-1.36-.32-.55-.18-1-.28-.96-.59.02-.16.24-.33.66-.51 2.58-1.12 4.31-1.87 5.17-2.23 2.46-1 2.97-1.17 3.31-1.18.07 0 .24.02.35.11.09.08.12.18.13.26 0 .05.01.18 0 .27z"/>
+                    </svg>
+                </span>
+                <span class="cta-btn-text">JOIN TELEGRAM</span>
+            </button>
+        </div>
+
+        <p class="note-text">Free Access · Opens Directly in Telegram App</p>
+
+        <!-- Managed By AJ Ads Agency Pill -->
+        <a class="managed-by-pill" href="https://t.me/+LlCfsKTU90s1YWI1" target="_blank" rel="noopener">
+            <svg class="aj-logo-svg" viewBox="0 0 100 100" fill="none">
+                <defs>
+                    <linearGradient id="ajBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00bcd4"/>
+                        <stop offset="100%" stop-color="#0066cc"/>
+                    </linearGradient>
+                    <linearGradient id="ajGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00e676"/>
+                        <stop offset="100%" stop-color="#008a3d"/>
+                    </linearGradient>
+                </defs>
+                <polygon points="12,78 34,78 52,22 36,22" fill="url(#ajBlue)"/>
+                <polygon points="28,78 44,78 62,22 48,22" fill="url(#ajBlue)"/>
+                <polygon points="56,18 68,18 88,78 50,66 70,58" fill="url(#ajGreen)"/>
+            </svg>
+            Managed by <b>AJ Ads Agency</b>
+        </a>
+    </div>
+
+    <!-- Fallback Modal -->
+    <div id="modal-overlay">
+        <div class="modal-body">
+            <div class="modal-title">Telegram Didn't Open?</div>
+            <div class="modal-desc">Tap below to open the channel directly or copy the invite link.</div>
+            <a id="modal-app-link" class="modal-action btn-open-app" href="#">Open in Telegram</a>
+            <button id="modal-copy-btn" class="modal-action btn-copy-link">Copy Invite Link</button>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var CONFIG = {
+            pixelId: "2241109723952937",
+            // Base64 encoded invite slug ("FDijVhfp2JA3NGU1")
+            encodedSlug: btoa("FDijVhfp2JA3NGU1")
+        };
+
+        var channelSlug = atob(CONFIG.encodedSlug);
+        var webFallback = "https://t.me/+" + channelSlug;
+
+        var pageLoadTs = Date.now();
+        var subscribeFired = false;
+
+        // 1. STRICT HEADLESS & CRAWLER BLOCKER
+        function isBotOrCrawler() {
+            var ua = navigator.userAgent || "";
+            var botPattern = /bot|crawl|spider|slurp|facebookexternalhit|mediapartners|headless|phantom|selenium|puppeteer|playwright|lighthouse|bingpreview|yandex|baidu/i;
+            if (botPattern.test(ua)) return true;
+            if (navigator.webdriver) return true;
+            if (!navigator.languages || navigator.languages.length === 0) return true;
+            if (window.outerWidth === 0 && window.outerHeight === 0) return true;
+            return false;
+        }
+
+        if (isBotOrCrawler()) return;
+
+        function generateEventId(prefix) {
+            return prefix + "_" + Date.now() + "_" + Math.random().toString(36).substring(2, 10);
+        }
+
+        // 2. IMMEDIATE PIXEL INITIALIZATION FOR VERIFIED BROWSERS
+        !function(f,b,e,v,n,t,s) {
+            if(f.fbq) return;
+            n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s);
+        }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+        fbq("init", CONFIG.pixelId);
+        fbq("track", "PageView", {}, { eventID: generateEventId("pv") });
+
+        // 3. DELAYED PARAMETER SCRUBBER
+        window.addEventListener("load", function() {
+            setTimeout(function() {
+                try {
+                    if (!window.history || !history.replaceState || !window.URL) return;
+                    var u = new URL(window.location.href);
+                    var stripParams = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "ad_id", "campaign_id", "adset_id"];
+                    var changed = false;
+                    stripParams.forEach(function(k) {
+                        if (u.searchParams.has(k)) {
+                            u.searchParams.delete(k);
+                            changed = true;
+                        }
+                    });
+                    if (changed) {
+                        history.replaceState(null, document.title, u.pathname + u.hash);
+                    }
+                } catch (err) {}
+            }, 3000);
+        });
+
+        // 4. CTA SUBSCRIBE CONVERSION & BEACON FLUSH REDIRECT
+        var joinBtn = document.getElementById("join-btn");
+        var overlay = document.getElementById("modal-overlay");
+        var modalAppLink = document.getElementById("modal-app-link");
+        var modalCopyBtn = document.getElementById("modal-copy-btn");
+
+        joinBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            if (!e.isTrusted) return;
+
+            var dwellTime = Date.now() - pageLoadTs;
+            if (!subscribeFired && dwellTime >= 400) {
+                subscribeFired = true;
+                if (typeof fbq === "function") {
+                    fbq("track", "Subscribe", {
+                        content_name: "DEV SURESHOT Join",
+                        status: "verified_click"
+                    }, {
+                        eventID: generateEventId("sub")
+                    });
+                }
+            }
+
+            var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            var tgDeepLink = "tg://join?invite=" + channelSlug;
+
+            // 350ms hold allows Meta beacon to transmit cleanly before app switch
+            setTimeout(function() {
+                if (isMobile) {
+                    var clickStart = Date.now();
+                    var switchedApp = false;
+
+                    var onVisibility = function() {
+                        if (document.hidden) switchedApp = true;
+                    };
+                    document.addEventListener("visibilitychange", onVisibility, { once: true });
+
+                    window.location.href = tgDeepLink;
+
+                    setTimeout(function() {
+                        document.removeEventListener("visibilitychange", onVisibility);
+                        if (!switchedApp && !document.hidden && (Date.now() - clickStart < 3500)) {
+                            modalAppLink.href = webFallback;
+                            overlay.style.display = "flex";
+                        }
+                    }, 2000);
+                } else {
+                    window.location.href = webFallback;
+                }
+            }, 350);
+        });
+
+        modalCopyBtn.addEventListener("click", function() {
+            navigator.clipboard.writeText(webFallback).then(function() {
+                modalCopyBtn.textContent = "Copied to Clipboard!";
